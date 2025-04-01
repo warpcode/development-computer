@@ -1,6 +1,5 @@
 ansible
 ansible-lint
-yamllint
 docker
 molecule
 molecule-plugins[docker]

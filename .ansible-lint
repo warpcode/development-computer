@@ -1,0 +1,4 @@
+skip_list:
+  - 'galaxy[no-changelog]'
+  - 'galaxy[no-runtime]'
+  - 'galaxy[tags-count]'

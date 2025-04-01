@@ -1,6 +1,6 @@
 ---
 - name: Include OS-specific variables
-  include_vars: "{{ ansible_system }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_system }}.yml"
 
 - name: Install (Linux)
   become: true
