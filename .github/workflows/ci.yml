@@ -120,9 +120,11 @@ jobs:
           || steps.changed-files.outputs.any_modified != 'true'
         run: |
           . venv/bin/activate
-          bash test.sh "$ROLE" -p "$ROLE_OS"
+          cd "roles/$ROLE"
+          molecule test
+          cd -
         env:
           PY_COLORS: "1"
           ANSIBLE_FORCE_COLOR: "1"
           ROLE: ${{ matrix.role }}
-          ROLE_OS: ${{ matrix.os }}
+          MOLECULE_DISTRO: ${{ matrix.os }}
