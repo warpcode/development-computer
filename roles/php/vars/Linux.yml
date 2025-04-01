@@ -1,0 +1,8 @@
+---
+
+_php_packages:
+    - php
+    # - php-codesniffer
+    # - phpmd
+    # - php-cs-fixer
+    - composer

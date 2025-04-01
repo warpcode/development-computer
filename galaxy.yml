@@ -1,0 +1,44 @@
+---
+namespace: warpcode
+name: development_computer
+description: Collection of roles to setup my development environment
+version: "1.0.0"
+readme: README.md
+
+authors:
+  - warpcode
+
+license:
+  - MIT
+tags:
+  - pc
+  - gaming
+  - cli
+  - macos
+  - tools
+  - osx
+  - homebrew
+  - brew
+  - workstation
+  - dev
+  - mas
+  - appstore
+  - apps
+  - configure
+  - development
+  - apple
+  - ios
+  - macbook
+  - imac
+  - macmini
+  - server
+
+repository: https://github.com/warpcode/development-computer
+documentation: https://github.com/warpcode/development-computer
+homepage: https://github.com/warpcode/development-computer
+issues: https://github.com/warpcode/development-computer/issues
+
+build_ignore: []
+
+dependencies:
+  community.general: ">=3.0.0"
