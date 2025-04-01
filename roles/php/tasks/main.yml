@@ -3,7 +3,7 @@
   include_vars: "{{ ansible_system }}.yml"
 
 - name: Install (Linux)
-  become: yes
+  become: true
   ansible.builtin.package:
     name: "{{ _php_packages }}"
   when:
@@ -16,7 +16,7 @@
     - ansible_system == "Darwin"
 
 - name: Install (Windows)
-  become: yes
+  become: true
   chocolatey.chocolatey.win_chocolatey:
     name: "{{ _php_packages }}"
   when:
