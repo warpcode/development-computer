@@ -4,9 +4,9 @@
 
   pre_tasks:
     - name: Update package manager cache (Linux)
-      become: yes
+      become: true
       ansible.builtin.package:
-        update_cache: yes
+        update_cache: true
       when:
         - ansible_system == 'Linux'
 
