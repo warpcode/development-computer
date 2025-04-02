@@ -3,11 +3,12 @@
   hosts: all
 
   pre_tasks:
-    - name: Update apt cache.
-      ansible.builtin.apt:
-        update_cache: true
-        cache_valid_time: 600
-      when: ansible_os_family == 'Debian'
+    - name: Update package manager cache (Linux)
+      become: yes
+      ansible.builtin.package:
+        update_cache: yes
+      when:
+        - ansible_system == 'Linux'
 
   roles:
     - role: warpcode.development_computer.php
