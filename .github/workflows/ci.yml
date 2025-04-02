@@ -67,6 +67,7 @@ jobs:
           - ubuntu:latest
         role:
           - php
+          - python
     steps:
       - name: Check out the codebase.
         uses: actions/checkout@v4
@@ -98,7 +99,7 @@ jobs:
           || steps.changed-files.outputs.any_modified != 'true'
         id: venv-cache
         with:
-          path: warpcode.development-computer/venv/
+          path: warpcode.development-computer/.venv/
           key: ${{ runner.os }}-venv-cache-${{ hashFiles('warpcode.development-computer/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-venv-cache-
@@ -110,20 +111,13 @@ jobs:
             || steps.changed-files.outputs.any_modified != 'true'
           )
           && steps.venv-cache.outputs.cache-hit != 'true'
-        run: >
-          python -m venv ./venv
-          && . venv/bin/activate
-          && pip install -r requirements.txt
+        run: make setup
 
       - name: Changed Molecule test
         if: >
           (steps.changed-files.outputs.any_modified == 'true' && contains(steps.changed-files.outputs.modified_files, matrix.role))
           || steps.changed-files.outputs.any_modified != 'true'
-        run: |
-          . venv/bin/activate
-          cd "roles/$ROLE"
-          molecule test
-          cd -
+        run: make test-$ROLE
         env:
           PY_COLORS: "1"
           ANSIBLE_FORCE_COLOR: "1"
