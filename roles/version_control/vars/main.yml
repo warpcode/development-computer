@@ -1,0 +1,6 @@
+---
+_version_control_git_packages:
+  - git
+
+_version_control_github_cli_packages:
+  - gh

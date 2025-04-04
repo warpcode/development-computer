@@ -1,0 +1,21 @@
+---
+- name: Converge
+  hosts: all
+
+  pre_tasks:
+    - name: Update package manager cache (Linux)
+      become: true
+      ansible.builtin.package:
+        update_cache: true
+      when:
+        - ansible_system == 'Linux'
+
+    - name: Ensure deb822 support (debian)
+      become: true
+      ansible.builtin.package:
+        name: python3-debian
+      when:
+        - ansible_os_family == 'Debian'
+
+  roles:
+    - role: warpcode.development_computer.version_control

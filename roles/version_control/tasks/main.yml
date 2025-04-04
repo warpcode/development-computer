@@ -1,0 +1,51 @@
+---
+
+- name: Include OS-specific variables
+  ignore_errors: true
+  ansible.builtin.include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_os_family }}/main.yml"
+  loop_control:
+    loop_var: item
+
+- name: Install gihub cli repository (apt)
+  become: true
+  register: _version_control_gh_state
+  ansible.builtin.deb822_repository:
+    name: "{{ _version_control_gh_apt_repo_name }}"
+    types: deb
+    uris: "{{ _version_control_gh_apt_repo_url }}"
+    suites: "{{ _version_control_gh_apt_repo_suites }}"
+    components: "{{ _version_control_gh_apt_repo_components }}"
+    signed_by: "{{ _version_control_gh_apt_repo_signed_by }}"
+  when:
+    - _version_control_gh_apt_repo_name is defined
+    - ansible_pkg_mgr == 'apt'
+
+- name: Update package manager cache (apt)
+  become: true
+  ansible.builtin.package:
+    update_cache: true
+  when:
+    - ansible_pkg_mgr == 'apt'
+    - _version_control_gh_state is defined and _version_control_gh_state is changed
+
+- name: Install (Linux)
+  become: true
+  ansible.builtin.package:
+    name: "{{ _version_control_git_packages + _version_control_github_cli_packages }}"
+  when:
+    - ansible_system == "Linux"
+
+- name: Install (MacOs)
+  community.general.homebrew:
+    name: "{{ _version_control_git_packages + _version_control_github_cli_packages }}"
+  when:
+    - ansible_system == "Darwin"
+
+- name: Install (Windows)
+  become: true
+  chocolatey.chocolatey.win_chocolatey:
+    name: "{{ _version_control_git_packages + _version_control_github_cli_packages }}"
+  when:
+    - ansible_system == "Win32NT"
