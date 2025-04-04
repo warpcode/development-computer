@@ -103,7 +103,7 @@ jobs:
           path: warpcode.development-computer/.venv/
           key: ${{ runner.os }}-venv-cache-${{ hashFiles('warpcode.development-computer/requirements.txt') }}
           restore-keys: |
-            ${{ runner.os }}-venv-cache-
+            ${{ matrix.os }}-{{ matrix.role }}-venv-cache-
 
       - name: Install test dependencies.
         if: >
