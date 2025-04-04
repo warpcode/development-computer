@@ -68,6 +68,7 @@ jobs:
         role:
           - php
           - python
+          - version_control
     steps:
       - name: Check out the codebase.
         uses: actions/checkout@v4
