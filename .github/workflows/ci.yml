@@ -101,7 +101,7 @@ jobs:
         id: venv-cache
         with:
           path: warpcode.development-computer/.venv/
-          key: ${{ runner.os }}-venv-cache-${{ hashFiles('warpcode.development-computer/requirements.txt') }}
+          key: ${{ matrix.os }}-{{ matrix.role }}-venv-cache-${{ hashFiles('warpcode.development-computer/requirements.txt') }}
           restore-keys: |
             ${{ matrix.os }}-{{ matrix.role }}-venv-cache-
 
