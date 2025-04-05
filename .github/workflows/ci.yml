@@ -50,7 +50,7 @@ jobs:
 
       - name: Install test dependencies.
         if: steps.venv-cache.outputs.cache-hit != 'true'
-        run: pip3 install ansible ansible-lint
+        run: make setup
 
       - name: Lint code.
         run: |
