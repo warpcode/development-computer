@@ -1,0 +1,5 @@
+---
+_encryption_packages:
+  - age.portable
+  - gpg4win
+  - openssl

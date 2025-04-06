@@ -1,0 +1,14 @@
+---
+- name: Converge
+  hosts: all
+
+  pre_tasks:
+    - name: Update package manager cache (Linux)
+      become: true
+      ansible.builtin.package:
+        update_cache: true
+      when:
+        - ansible_system == 'Linux'
+
+  roles:
+    - role: warpcode.development_computer.encryption
