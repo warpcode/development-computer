@@ -1,0 +1,5 @@
+---
+
+_visual_studio_code_yum_repo_name: vscode
+_visual_studio_code_yum_repo_baseurl: https://packages.microsoft.com/yumrepos/vscode
+_visual_studio_code_yum_repo_gpg_key: https://packages.microsoft.com/keys/microsoft.asc
