@@ -1,3 +1,12 @@
 ---
 neovim_preferred_version: latest
 neovim_linux_path: /usr/bin/nvim
+
+neovim_config_repo_use_ssh: true
+neovim_config_repo: "{{  'git@github.com:' if neovim_config_repo_use_ssh else 'https://github.com/' }}warpcode/vim-config.git"
+neovim_config_path: >-
+  {%- if ansible_system == 'Win32NT' -%}
+    {{ ansible_env.LOCALAPPDATA }}/nvim
+  {%- else -%}
+    {{ ansible_env.HOME }}/.config/nvim
+  {%- endif -%}

@@ -43,7 +43,7 @@
         group: root
         mode: '0755'
       when: >
-        _neovim_current_version.rc > 0
+        _neovim_current_version.stdout == ""
         or ( neovim_preferred_version if neovim_preferred_version != 'latest' else _neovim_latest_json_response.json.tag_name ) is version(_neovim_current_version.stdout, '>')
 
 - name: Install (MacOs)
@@ -52,9 +52,26 @@
   when:
     - ansible_system == "Darwin"
 
-- name: Install (Windows)
-  become: true
-  chocolatey.chocolatey.win_chocolatey:
-    name: "{{ _neovim_packages }}"
+- name: Process Windows
+  block:
+    - name: Install (Windows)
+      become: true
+      chocolatey.chocolatey.win_chocolatey:
+        name: "{{ _neovim_packages }}"
+
+    - name: Ensure nvim is accessible on the PATH (Windows)
+      ansible.windows.win_path:
+        elements:
+          - '%SystemDrive%\tools\neovim\nvim-win64\bin'
+        state: present
   when:
     - ansible_system == "Win32NT"
+
+- name: Clone neovim config repo
+  ansible.builtin.git:
+    repo: "{{ neovim_config_repo }}"
+    dest: "{{ neovim_config_path }}"
+    force: true
+    update: true
+  when:
+    - ansible_system != 'Win32NT'
