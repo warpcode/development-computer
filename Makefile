@@ -1,4 +1,4 @@
-ROLES_DIRS := $(shell for p in ./roles/*; do  echo $$(basename "$$p"); done )
+SCENARIO_DIRS := $(shell for p in ./molecule/*; do  echo $$(basename "$$p"); done )
 
 setup: setup-venv
 
@@ -9,12 +9,12 @@ setup-venv:
 lint:
 	. .venv/bin/activate; ansible-lint .
 
-test: $(addprefix test-,$(ROLES_DIRS))
+test: $(addprefix test-,$(SCENARIO_DIRS))
 
 define test_template =
     .PHONY: test-$(1)
 
     test-$(1):
-		. .venv/bin/activate; cd "roles/$(1)"; molecule test
+		. .venv/bin/activate; molecule test -s $(1)
 endef
-$(foreach cmpnt,$(ROLES_DIRS),$(eval $(call test_template,$(cmpnt))))
+$(foreach cmpnt,$(SCENARIO_DIRS),$(eval $(call test_template,$(cmpnt))))
