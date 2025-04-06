@@ -3,6 +3,3 @@
   hosts: all
   roles:
     - role: warpcode.development_computer.visual_studio_code
-      vars:
-        visual_studio_code_extensions:
-          - ms-azuretools.vscode-docker
