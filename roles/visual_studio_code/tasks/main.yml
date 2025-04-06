@@ -68,7 +68,7 @@
     argv:
       - code
       - --install-extension
-      - "{{ extension  }}"
+      - "{{ extension }}"
   when:
     - ansible_user_id != 'root'
   register: _visual_studio_code_extensions_output
