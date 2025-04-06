@@ -71,6 +71,7 @@ jobs:
           - fedora:latest
           - ubuntu:latest
         role:
+          - build_tools
           - encryption
           - php
           - python
