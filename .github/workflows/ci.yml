@@ -54,7 +54,7 @@ jobs:
 
       - name: Lint code.
         run: |
-          ansible-lint
+          make lint
 
   molecule:
     name: Molecule
