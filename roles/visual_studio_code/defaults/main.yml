@@ -1,0 +1,39 @@
+---
+visual_studio_code_extensions:
+  # Ansible
+  - redhat.ansible
+
+  # Azure
+  - ms-azure-devops.azure-pipelines
+  - ms-azuretools.vscode-azure-github-copilot
+  - ms-azuretools.vscode-azureappservice
+  - ms-azuretools.vscode-azurestorage
+  - ms-azuretools.vscode-azurevirtualmachines
+  - ms-azuretools.vscode-cosmosdb
+  - ms-vscode.azurecli
+  - ms-vscode.vscode-node-azure-pack
+
+  # Docker
+  - ms-azuretools.vscode-docker
+
+  # Javascript/Typescript
+  - ms-vscode.vscode-typescript-next
+
+  # Jupyter
+  - ms-toolsai.jupyter
+  - ms-toolsai.jupyter-keymap
+  - ms-toolsai.jupyter-renderers
+  - ms-toolsai.vscode-jupyter-cell-tags
+  - ms-toolsai.vscode-jupyter-slideshow
+
+  # PHP
+  - bmewburn.vscode-intelephense-client
+  - xdebug.php-debug
+
+  # Python
+  - ms-python.debugpy
+  - ms-python.python
+  - ms-python.vscode-pylance
+
+  # YAML
+  - redhat.vscode-yaml

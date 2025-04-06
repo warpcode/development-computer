@@ -1,5 +1,4 @@
 ---
-
 - name: Include OS-specific variables
   ignore_errors: true
   ansible.builtin.include_vars: "{{ item }}"
@@ -62,3 +61,15 @@
     name: "{{ _visual_studio_code_packages }}"
   when:
     - ansible_system == "Win32NT"
+
+- name: Install extensions
+  changed_when: "'successfully installed' in  _visual_studio_code_extensions_output.stdout"
+  ansible.builtin.command:
+    argv:
+      - code
+      - --install-extension
+      - "{{ extension  }}"
+  register: _visual_studio_code_extensions_output
+  loop: "{{ visual_studio_code_extensions }}"
+  loop_control:
+    loop_var: extension
