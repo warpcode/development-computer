@@ -76,7 +76,7 @@ jobs:
           - php
           - python
           - version_control
-          - _visual_studio_code
+          - visual_studio_code
     steps:
       - name: Check out the codebase.
         uses: actions/checkout@v4
