@@ -1,5 +1,8 @@
 SCENARIO_DIRS := $(shell for p in ./molecule/*; do  echo $$(basename "$$p"); done )
 
+install: setup
+	. .venv/bin/activate; ansible-playbook -i inventory.example playbook.yml -K --limit localhost
+
 setup: setup-venv
 
 setup-venv:

@@ -1,0 +1,6 @@
+---
+- name: Full Install
+  hosts: all
+  gather_facts: true
+  roles:
+    - role: visual_studio_code
