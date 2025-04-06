@@ -4,6 +4,7 @@
   ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
     - "{{ ansible_os_family }}/main.yml"
+    - "{{ ansible_system }}.yml"
   loop_control:
     loop_var: item
 
