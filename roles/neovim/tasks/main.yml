@@ -1,0 +1,60 @@
+---
+- name: Include OS-specific variables
+  ignore_errors: true
+  ansible.builtin.include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_system }}.yml"
+  loop_control:
+    loop_var: item
+
+- name: Process Linux
+  when:
+    - ansible_system == "Linux"
+  block:
+    - name: Find latest release
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/neovim/neovim/releases/latest
+        return_content: true
+      register: _neovim_latest_json_response
+      when:
+        - neovim_preferred_version == 'latest'
+
+    - name: Get current installed version
+      ansible.builtin.shell:
+        cmd: "{{ neovim_linux_path }} --version | grep NVIM | cut -d ' ' -f2"
+      register: _neovim_current_version
+      changed_when: false
+      failed_when: false
+
+    - name: Install App image (Linux)
+      become: true
+      ansible.builtin.get_url:
+        url: >-
+          https://github.com/neovim/neovim/releases/download/
+          {{- neovim_preferred_version if neovim_preferred_version != 'latest' else _neovim_latest_json_response.json.tag_name -}}
+          /nvim-linux-x86_64.appimage
+        # checksum: >-
+        #   sha256:https://github.com/neovim/neovim/releases/download/
+        #   {{- neovim_preferred_version if neovim_preferred_version != 'latest' else _neovim_latest_json_response.json.tag_name -}}
+        #   /nvim-linux-x86_64.appimage.sha256sum
+        dest: "{{ neovim_linux_path }}"
+        force: true
+        owner: root
+        group: root
+        mode: '0755'
+      when: >
+        _neovim_current_version.rc > 0
+        or ( neovim_preferred_version if neovim_preferred_version != 'latest' else _neovim_latest_json_response.json.tag_name ) is version(_neovim_current_version.stdout, '>')
+
+- name: Install (MacOs)
+  community.general.homebrew_cask:
+    name: "{{ _neovim_packages }}"
+  when:
+    - ansible_system == "Darwin"
+
+- name: Install (Windows)
+  become: true
+  chocolatey.chocolatey.win_chocolatey:
+    name: "{{ _neovim_packages }}"
+  when:
+    - ansible_system == "Win32NT"

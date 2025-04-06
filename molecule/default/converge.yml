@@ -7,3 +7,4 @@
     - role: warpcode.development_computer.php
     - role: warpcode.development_computer.python
     - role: warpcode.development_computer.version_control
+    - role: warpcode.development_computer.neovim

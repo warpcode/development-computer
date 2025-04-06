@@ -1,0 +1,3 @@
+---
+neovim_preferred_version: latest
+neovim_linux_path: /usr/bin/nvim
