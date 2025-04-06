@@ -6,12 +6,14 @@ name: CI
     paths:
       # - ".github/workflows/ci.yml"
       - "roles/**"
+      - "molecule/**"
   push:
     branches:
       - main
     paths:
       # - ".github/workflows/ci.yml"
       - "roles/**"
+      - "molecule/**"
   schedule:
     # Run on the first of the month at midnight
     - cron: "0 0 1 * *"
