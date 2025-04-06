@@ -70,7 +70,7 @@
       - --install-extension
       - "{{ extension  }}"
   when:
-    - lookup('env', 'USER') != 'root'
+    - ansible_user_id != 'root'
   register: _visual_studio_code_extensions_output
   loop: "{{ visual_studio_code_extensions }}"
   loop_control:
