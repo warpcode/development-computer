@@ -1,0 +1,28 @@
+---
+- name: Include OS-specific variables
+  ignore_errors: true
+  ansible.builtin.include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_system }}.yml"
+  loop_control:
+    loop_var: item
+
+- name: Install (Linux)
+  become: true
+  ansible.builtin.package:
+    name: "{{ _nano_packages }}"
+  when:
+    - ansible_system == "Linux"
+
+- name: Install (MacOs)
+  community.general.homebrew:
+    name: "{{ _nano_packages }}"
+  when:
+    - ansible_system == "Darwin"
+
+- name: Install (Windows)
+  become: true
+  chocolatey.chocolatey.win_chocolatey:
+    name: "{{ _nano_packages }}"
+  when:
+    - ansible_system == "Win32NT"
