@@ -13,6 +13,13 @@
         elements:
           - '%SystemDrive%\ProgramData\nvm'
 
+    - name: Install latest default node version (Windows)
+      ansible.windows.win_command: >
+        nvm install lts 2>&1
+      changed_when: "_javascript_nvm_node_install_win_response is succeeded and 'Installation complete' in _javascript_nvm_node_install_win_response.stdout"
+      failed_when: "_javascript_nvm_node_install_win_response is not succeeded or 'nstall' not in _javascript_nvm_node_install_win_response.stdout"
+      register: _javascript_nvm_node_install_win_response
+
 - name: Process *nix
   when:
     - ansible_system != 'Win32NT'
@@ -24,7 +31,7 @@
 
     - name: Get NVM version
       ansible.builtin.shell:
-        cmd: ". {{ ansible_env.HOME }}/.nvm/nvm.sh; nvm --version"
+        cmd: ". \"{{ ansible_env.HOME }}/.nvm/nvm.sh\"; nvm --version"
       register: _javascript_nvm_version
       changed_when: false
       failed_when: false
@@ -37,7 +44,7 @@
         return_content: true
       register: _javascript_nvm_latest_json_response
 
-    - name: Install nvm
+    - name: Install nvm (*nix)
       ansible.builtin.shell:
         cmd: >
           PROFILE=/dev/null
@@ -46,3 +53,13 @@
         not _javascript_nvm_installed.stat.exists
         or not _javascript_nvm_version is defined
         or _javascript_nvm_latest_json_response.json.tag_name is version("v" + _javascript_nvm_version.stdout, '>')
+
+    - name: Install latest default node version (*nix)
+      ansible.builtin.shell:
+        cmd: ". \"{{ ansible_env.HOME }}/.nvm/nvm.sh\"; nvm install --lts 2>&1"
+      changed_when: "_javascript_node_install_nix_response is succeeded and 'installing' in _javascript_node_install_nix_response.stdout"
+      failed_when: "_javascript_node_install_nix_response is not succeeded or 'Now using' not in _javascript_node_install_nix_response.stdout"
+      args:
+        executable: /bin/bash
+        chdir: "{{ ansible_env.HOME }}"
+      register: _javascript_node_install_nix_response
