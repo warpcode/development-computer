@@ -1,0 +1,48 @@
+---
+- name: Process Windows
+  when:
+    - ansible_system == 'Win32NT'
+  block:
+    - name: Install (Windows)
+      become: true
+      chocolatey.chocolatey.win_chocolatey:
+        name: nvm.portable
+
+    - name: Ensure nvm is accessible on the PATH
+      ansible.windows.win_path:
+        elements:
+          - '%SystemDrive%\ProgramData\nvm'
+
+- name: Process *nix
+  when:
+    - ansible_system != 'Win32NT'
+  block:
+    - name: Check if nvm is already installed
+      ansible.builtin.stat:
+        path: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+      register: _javascript_nvm_installed
+
+    - name: Get NVM version
+      ansible.builtin.shell:
+        cmd: ". {{ ansible_env.HOME }}/.nvm/nvm.sh; nvm --version"
+      register: _javascript_nvm_version
+      changed_when: false
+      failed_when: false
+      when:
+        - _javascript_nvm_installed.stat.exists
+
+    - name: Find latest nvm release
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/nvm-sh/nvm/releases/latest
+        return_content: true
+      register: _javascript_nvm_latest_json_response
+
+    - name: Install nvm
+      ansible.builtin.shell:
+        cmd: >
+          PROFILE=/dev/null
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/{{ _javascript_nvm_latest_json_response.json.tag_name }}/install.sh | bash
+      when: >
+        not _javascript_nvm_installed.stat.exists
+        or not _javascript_nvm_version is defined
+        or _javascript_nvm_latest_json_response.json.tag_name is version("v" + _javascript_nvm_version.stdout, '>')
