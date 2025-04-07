@@ -2,13 +2,11 @@
 - name: Converge
   hosts: all
   roles:
-    - role: warpcode.development_computer.build_tools
+    - role: warpcode.development_computer.base_tools
     - role: warpcode.development_computer.encryption
-    - role: warpcode.development_computer.nano
     - role: warpcode.development_computer.php
     - role: warpcode.development_computer.python
     - role: warpcode.development_computer.version_control
     - role: warpcode.development_computer.neovim
       vars:
         neovim_config_repo_use_ssh: false
-    - role: warpcode.development_computer.vim

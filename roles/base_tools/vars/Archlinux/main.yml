@@ -1,0 +1,10 @@
+---
+_base_tools_packages:
+  - base-devel
+  - curl
+  - jq
+  - nano
+  - screen
+  - tmux
+  - vim
+  - wget

@@ -1,0 +1,10 @@
+---
+_base_tools_packages:
+  - build-essential
+  - curl
+  - jq
+  - nano
+  - screen
+  - tmux
+  - vim
+  - wget

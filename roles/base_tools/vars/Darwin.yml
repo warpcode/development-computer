@@ -1,0 +1,6 @@
+---
+_base_tools_packages:
+  - jq
+  - nano
+  - tmux
+  - vim

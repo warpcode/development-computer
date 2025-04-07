@@ -1,0 +1,7 @@
+---
+_base_tools_packages:
+  - curl
+  - nano-win
+  - notepadplusplus
+  - vim
+  - wget
