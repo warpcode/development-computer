@@ -49,3 +49,19 @@
     name: "{{ _version_control_git_packages + _version_control_github_cli_packages }}"
   when:
     - ansible_system == "Win32NT"
+
+- name: Instal github cli extensions
+  changed_when: "'Installed extension' in _version_control_github_cli_extensions_output.stdout"
+  failed_when:
+    - _version_control_github_cli_extensions_output.rc > 0
+    - "'already an installed extension' not in _version_control_github_cli_extensions_output.stderr"
+  ansible.builtin.command:
+    argv:
+      - gh
+      - extension
+      - install
+      - "{{ extension }}"
+  register: _version_control_github_cli_extensions_output
+  loop: "{{ _version_control_github_cli_extensions }}"
+  loop_control:
+    loop_var: extension
