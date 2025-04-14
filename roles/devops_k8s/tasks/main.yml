@@ -40,6 +40,19 @@
     - _devops_k8s_kubectl_apt_repo_name is defined
     - ansible_pkg_mgr == 'apt'
 
+- name: Install kubectl repository (dnf/yum)
+  become: true
+  ansible.builtin.yum_repository:
+    name: "{{ _devops_k8s_kubectl_yum_repo_name }}"
+    description: "{{ [_devops_k8s_kubectl_yum_repo_name, 'repository'] | join(' ') }}"
+    baseurl: "{{ _devops_k8s_kubectl_yum_repo_baseurl }}"
+    gpgkey: "{{ _devops_k8s_kubectl_yum_repo_gpg_key }}"
+    gpgcheck: true
+    enabled: true
+  when:
+    - _devops_k8s_kubectl_yum_repo_name is defined
+    - ansible_pkg_mgr is regex("dnf5?") or ansible_pkg_mgr == 'yum'
+
 - name: Update package manager cache (apt)
   become: true
   ansible.builtin.package:

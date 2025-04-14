@@ -1,0 +1,5 @@
+---
+
+_devops_k8s_kubectl_yum_repo_name: kubectl
+_devops_k8s_kubectl_yum_repo_baseurl: https://pkgs.k8s.io/core:/stable:/v1.32/rpm/
+_devops_k8s_kubectl_yum_repo_gpg_key: https://pkgs.k8s.io/core:/stable:/v1.32/rpm/repodata/repomd.xml.key
