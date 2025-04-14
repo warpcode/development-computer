@@ -1,0 +1,72 @@
+---
+# https://dl.k8s.io/release/stable.txt
+
+
+- name: Include OS-specific variables
+  ignore_errors: true
+  ansible.builtin.include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_os_family }}/{{ ansible_distribution }}.yml"
+    - "{{ ansible_os_family }}/main.yml"
+    - "{{ ansible_system }}.yml"
+  loop_control:
+    loop_var: item
+
+- name: Install helm repository (apt)
+  become: true
+  register: _devops_k8s_helm_state
+  ansible.builtin.deb822_repository:
+    name: "{{ _devops_k8s_helm_apt_repo_name }}"
+    types: deb
+    uris: "{{ _devops_k8s_helm_apt_repo_url }}"
+    suites: "{{ _devops_k8s_helm_apt_repo_suites }}"
+    components: "{{ _devops_k8s_helm_apt_repo_components }}"
+    signed_by: "{{ _devops_k8s_helm_apt_repo_signed_by }}"
+  when:
+    - _devops_k8s_helm_apt_repo_name is defined
+    - ansible_pkg_mgr == 'apt'
+
+- name: Install kubectl repository (apt)
+  become: true
+  register: _devops_k8s_kubectl_state
+  ansible.builtin.deb822_repository:
+    name: "{{ _devops_k8s_kubectl_apt_repo_name }}"
+    types: deb
+    uris: "{{ _devops_k8s_kubectl_apt_repo_url }}"
+    suites: "{{ _devops_k8s_kubectl_apt_repo_suites }}"
+    components: "{{ _devops_k8s_kubectl_apt_repo_components }}"
+    signed_by: "{{ _devops_k8s_kubectl_apt_repo_signed_by }}"
+  when:
+    - _devops_k8s_kubectl_apt_repo_name is defined
+    - ansible_pkg_mgr == 'apt'
+
+- name: Update package manager cache (apt)
+  become: true
+  ansible.builtin.package:
+    update_cache: true
+  when: >
+    ansible_pkg_mgr == 'apt'
+    and (
+      _devops_k8s_helm_state is defined and _devops_k8s_helm_state is changed
+       or _devops_k8s_kubectl_state is defined and _devops_k8s_kubectl_state is changed 
+    )
+
+- name: Install (Linux)
+  become: true
+  ansible.builtin.package:
+    name: "{{ _devops_k8s_helm_packages + _devops_k8s_kubectl_packages }}"
+  when:
+    - ansible_system == "Linux"
+
+- name: Install (MacOs)
+  community.general.homebrew:
+    name: "{{ _devops_k8s_helm_packages + _devops_k8s_kubectl_packages }}"
+  when:
+    - ansible_system == "Darwin"
+
+- name: Install (Windows)
+  become: true
+  chocolatey.chocolatey.win_chocolatey:
+    name: "{{ _devops_k8s_helm_packages + _devops_k8s_kubectl_packages }}"
+  when:
+    - ansible_system == "Win32NT"

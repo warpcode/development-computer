@@ -1,0 +1,36 @@
+---
+
+- name: Install hashicorp repository (apt)
+  become: true
+  register: _devops_terraform_hashicorp_state
+  ansible.builtin.deb822_repository:
+    name: "{{ _devops_terraform_hashicorp_apt_repo_name }}"
+    types: deb
+    uris: "{{ _devops_terraform_hashicorp_apt_repo_url }}"
+    suites: "{{ _devops_terraform_hashicorp_apt_repo_suites }}"
+    components: "{{ _devops_terraform_hashicorp_apt_repo_components }}"
+    signed_by: "{{ _devops_terraform_hashicorp_apt_repo_signed_by }}"
+  when:
+    - _devops_terraform_hashicorp_apt_repo_name is defined
+    - ansible_pkg_mgr == 'apt'
+
+- name: Install hashicorp repository (dnf/yum)
+  become: true
+  ansible.builtin.yum_repository:
+    name: "{{ _devops_terraform_hashicorp_yum_repo_name }}"
+    description: "{{ [_devops_terraform_hashicorp_yum_repo_name, 'repository'] | join(' ') }}"
+    baseurl: "{{ _devops_terraform_hashicorp_yum_repo_baseurl }}"
+    gpgkey: "{{ _devops_terraform_hashicorp_yum_repo_gpg_key }}"
+    gpgcheck: true
+    enabled: true
+  when:
+    - _devops_terraform_hashicorp_yum_repo_name is defined
+    - ansible_pkg_mgr is regex("dnf5?") or ansible_pkg_mgr == 'yum'
+
+- name: Update package manager cache (apt)
+  become: true
+  ansible.builtin.package:
+    update_cache: true
+  when:
+    - ansible_pkg_mgr == 'apt'
+    - _devops_terraform_hashicorp_state is defined and _devops_terraform_hashicorp_state is changed

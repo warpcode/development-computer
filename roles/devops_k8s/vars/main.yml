@@ -1,0 +1,8 @@
+---
+
+_devops_k8s_helm_packages:
+  - helm
+
+_devops_k8s_kubectl_packages:
+  - kubectl
+

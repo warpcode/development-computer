@@ -1,0 +1,5 @@
+---
+_devops_vagrant_packages:
+  - vagrant
+  - vagrant-manager
+  - vagrant-winrm-config

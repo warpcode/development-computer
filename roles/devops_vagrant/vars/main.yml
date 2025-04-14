@@ -1,0 +1,6 @@
+---
+_devops_vagrant_packages:
+  - vagrant
+  - vagrant-libvirt
+  # - vagrant-bindfs
+  - vagrant-sshfs

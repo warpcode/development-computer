@@ -1,0 +1,3 @@
+---
+_devops_vagrant_packages:
+  - vagrant

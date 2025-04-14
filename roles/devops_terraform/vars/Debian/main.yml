@@ -1,0 +1,8 @@
+---
+
+_devops_terraform_hashicorp_apt_repo_name: hashicorp
+_devops_terraform_hashicorp_apt_repo_url: https://apt.releases.hashicorp.com
+_devops_terraform_hashicorp_apt_repo_suites: "{{ ansible_distribution_release }}"
+_devops_terraform_hashicorp_apt_repo_components:
+  - main
+_devops_terraform_hashicorp_apt_repo_signed_by: https://apt.releases.hashicorp.com/gpg

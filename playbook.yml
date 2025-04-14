@@ -3,4 +3,13 @@
   hosts: all
   gather_facts: true
   roles:
+    - role: base_tools
+    - role: devops_k8s
+    - role: devops_terraform
+    - role: devops_vagrant
+    - role: encryption
     - role: javascript
+    - role: php
+    - role: python
+    - role: version_control
+    - role: visual_studio_code

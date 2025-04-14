@@ -1,0 +1,4 @@
+---
+_devops_terraform_hashicorp_yum_repo_name: hashicorp
+_devops_terraform_hashicorp_yum_repo_baseurl: https://rpm.releases.hashicorp.com/RHEL/$releasever/$basearch/stable
+_devops_terraform_hashicorp_yum_repo_gpg_key: https://rpm.releases.hashicorp.com/gpg

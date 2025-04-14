@@ -1,0 +1,7 @@
+---
+
+_devops_k8s_helm_packages:
+  - kubernetes-helm
+
+_devops_k8s_kubectl_packages:
+  - kubernetes-cli

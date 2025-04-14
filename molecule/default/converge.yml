@@ -3,6 +3,9 @@
   hosts: all
   roles:
     - role: warpcode.development_computer.base_tools
+    - role: warpcode.development_computer.devops_k8s
+    - role: warpcode.development_computer.devops_terraform
+    - role: warpcode.development_computer.devops_vagrant
     - role: warpcode.development_computer.encryption
     - role: warpcode.development_computer.javascript
     - role: warpcode.development_computer.php
