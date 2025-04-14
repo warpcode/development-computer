@@ -1,0 +1,5 @@
+---
+
+devops_vagrant_plugins:
+  - vagrant-libvirt
+  - vagrant-sshfs

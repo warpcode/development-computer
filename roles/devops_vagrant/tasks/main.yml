@@ -28,3 +28,32 @@
     name: "{{ _devops_vagrant_packages }}"
   when:
     - ansible_system == "Win32NT"
+
+- name: Get list of installed vagrant plugins
+  changed_when: false
+  failed_when: false
+  ansible.builtin.command:
+    argv:
+      - vagrant
+      - plugin
+      - list
+  register: _vagrant_plugins_list_output
+
+- name: Install vagrant plugins
+  changed_when: "'Installed the plugin' in _vagrant_plugins_output.stdout"
+  failed_when:
+    - _vagrant_plugins_output.rc > 0
+    - "'already an installed extension' not in _vagrant_plugins_output.stderr"
+  ansible.builtin.command:
+    argv:
+      - vagrant
+      - plugin
+      - install
+      - "{{ extension }}"
+  when:
+    - extension not in _vagrant_plugins_list_output.stdout
+    - extension != ''
+  register: _vagrant_plugins_output
+  loop: "{{ devops_vagrant_plugins }}"
+  loop_control:
+    loop_var: extension
